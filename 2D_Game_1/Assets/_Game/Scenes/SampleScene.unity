@@ -6874,9 +6874,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f2b727c056cb574e8b2a9ebb0cf1366, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Target: {fileID: 395212906}
-  Offset: {x: 0, y: 1, z: -20}
-  speed: 10
+  target: {fileID: 395212906}
+  offset: {x: 0, y: 0, z: -20}
+  smoothSpeed: 0.125
 --- !u!4 &521253482 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2977215193977962804, guid: f35a0c05922153649bda471f3e4e7c01, type: 3}
