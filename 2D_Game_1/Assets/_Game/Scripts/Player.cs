@@ -5,6 +5,9 @@ using UnityEngine;
 
 public class Player : Character
 {
+    private Vector3 savePoint;
+
+    #region Sample Code
     [SerializeField] private Rigidbody2D rb;
     
     [SerializeField] private LayerMask groundLayer; /// để như này dễ sửa thông số của ground
@@ -18,12 +21,12 @@ public class Player : Character
     private bool isGrounded = false;
     private bool isJumping = false;
     private bool isAttack = false;
+    private bool isDead = false;
 
     private float horizontal;
 
     private int coin = 0;
 
-    private Vector3 savePoint;
 
     private void Awake()
     {
@@ -40,9 +43,9 @@ public class Player : Character
        
         isGrounded = CheckGrounded();
 
-        //horizontal = Input.GetAxisRaw("Horizontal");
+        horizontal = Input.GetAxisRaw("Horizontal");
 
-        if(isAttack)
+        if (isAttack)
         {
             rb.velocity = Vector2.zero;
             return;
@@ -87,7 +90,7 @@ public class Player : Character
 
             transform.rotation = Quaternion.Euler(new Vector3(0, horizontal > 0 ? 0 : 180, 0));
         }
-        else if (isGrounded && isJumping==false)
+        else if (isGrounded && isJumping == false && isDead == false)
         {
             ChangeAnim("Idle");
             rb.velocity = Vector2.zero;
@@ -97,15 +100,17 @@ public class Player : Character
 
     public override void OnInit()
     {
+        #region Sample Code
         base.OnInit();
-
         isAttack = false;
         currentAnimName = "Die";
         transform.position = savePoint;
         ChangeAnim("Idle");
         DeActiveAttack();
         SavePoint();
-        UIManager.instance.SetCoin(coin);
+        isDead = false;
+        //UIManager.instance.SetCoin(coin);
+        #endregion
     }
 
     public override void OnRespawn()
@@ -199,22 +204,24 @@ public class Player : Character
     {
         this.horizontal = horizontal;
     }
+    #endregion
+
+    public void HồiSinh()
+    {
+        #region Sample Code
+        OnInit();
+        #endregion
+
+        transform.position = savePoint;
+    }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.tag == "Coin")
+        if(collision.CompareTag("DeathZone"))
         {
-            coin++;
-            PlayerPrefs.SetInt("coin", coin);
-            UIManager.instance.SetCoin(coin);
-            Destroy(collision.gameObject);
-        }
-
-        if(collision.tag == "DeathZone")
-        {
+            isDead = true;
             ChangeAnim("Die");
-
-            Invoke(nameof(OnInit), 1f);
+            Invoke(nameof(HồiSinh), 1f);
         }
     }
 

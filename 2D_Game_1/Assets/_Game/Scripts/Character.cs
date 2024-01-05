@@ -25,6 +25,7 @@ public class Character : MonoBehaviour
     public virtual void OnInit()
     {
         hp = 100;
+        if(healthBar != null)
         healthBar.OnInit(100, transform);
     }
 
@@ -62,6 +63,7 @@ public class Character : MonoBehaviour
                 OnDeath();
             }
 
+            if(healthBar != null)
             healthBar.SetNewHp(hp);
             Instantiate(combatTextPrefab, transform.position + Vector3.up,Quaternion.identity).OnInit(damage);
 
